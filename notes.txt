@@ -1,0 +1,98 @@
+We have to create a virtual environment as we need to import many packages
+
+before all we need to do
+brew install portaudio for macOS
+
+Packages:
+speech recognition pyaudio
+setuptools
+webbrowser(default installed) -- built in module
+pyttsx3 ---- text to speech 
+pocketsphinx ---- for audio recognition
+pygame --- for mp3 loading
+
+
+First we have to create a Recognizer object ---- for speech recognition
+How ----
+import speech recognition as sr
+recognizer = sr.Recognizer() #Creating object
+
+Then we have to initialize pyttsx3 ---- for text to speech
+How ----
+import pyttsx3
+engine = pyttsx3.init()
+
+Then we can do text to speech by
+engine.say("......Speech......")
+engine.runAndWait()
+
+
+
+Microphone recognition:
+How -----
+# obtain audio from the microphone
+recognizer = sr.Recognizer()
+with sr.Microphone() as source:
+    print("Say something!")
+    audio = r.listen(source , timeout = 2 , phrase_time_limit = 1) 
+    # timeout is a parameter which defines how much time the recognizer will wait to start a phrase before throwing an Exception
+    # phrase_time_limit is a parameter which defines upto how much time it will wait for listening to your phrase
+
+# recognize speech using google audio recognition
+try:
+    command = recognizer.recognize_google(audio)
+    print(command)
+except Exception as e:
+    print(e)
+
+
+
+How to check for desired command -----
+Eg ---
+if "jarvis" in command.lower():
+    print("Activating Jarvis")
+
+
+
+How to open web browser applications -----
+def process(command):
+    if "open google" in command.lower():
+        webbrowser.open("https://google.com")
+
+and so on.....
+We can give any valid link to it and it will play it
+
+
+Letting OpenAI handle the request......
+We have to download OpenAI API and import it
+pip install openai
+
+Making API request ----
+from openai import OpenAI
+client = OpenAI()
+
+completion = client.chat.completions.create(
+  model="gpt-4o-mini",
+  messages=[
+    {"role": "system", "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."},
+    {"role": "user", "content": command}
+  ]
+)
+
+print(completion.choices[0].message.content) #prints the content
+
+#####FUCK IT IS PAID.....I will do it when I have the money bro
+
+
+gTTS ----- better speech recognition but PAID
+
+Playing mp3 files -----
+First install and import pygame
+import pygame
+Initialize it ----- pygame.mixer.init()
+Load the mp3 file ----- pygame.mixer.music.load("your file.mp3")
+Play the mp3 file ------ pygame.mixer.music.play()
+
+Keeping the program running until the music stops Playing -----
+while pygame.mixer.music.get_busy():
+    pygame.time.Clock().tick(10)
