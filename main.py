@@ -11,13 +11,17 @@ def speak(str):
     tts = gTTS(str , lang="en")
     tts.save("hello.mp3")
     os.system("afplay hello.mp3")
+
+def applications(str):
+    str1 = str.replace(" ","")
+    print(str1)
+    os.system(f"open -a {str1[4:]}")
     
-def process(str):
-    if "open youtube" in str.lower():
-        webbrowser.open("https://www.youtube.com")
-    elif "open facebook" in str.lower():
+def browse(str):
+
+    if "open facebook" in str.lower():
         webbrowser.open("https://www.facebook.com")
-    elif "open linkedin" in str.lower():
+    if "open linkedin" in str.lower():
         webbrowser.open("https://www.linkedin.com")
 
 def music(str):
@@ -44,6 +48,7 @@ except Exception as e:
 if "alexa" in command.lower():
     speak("Ya")
     while(True):
+        
         with sr.Microphone() as source:
             print("Say something!")
             audio = recognizer.listen(source , timeout = 3 , phrase_time_limit = 3)
@@ -55,11 +60,12 @@ if "alexa" in command.lower():
            print("Cant hear sorry")
            command = ""
            
-        if "music" in command.lower():
+        if "browser" in command.lower():
+            browse(command)
+        elif "music" in command.lower():
             music("playlist")
         else:
-            process(command)
-
+            applications(command)
    
    
  
